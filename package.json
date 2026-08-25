@@ -1,0 +1,86 @@
+{
+  "name": "szmap",
+  "version": "0.0.1",
+  "description": "",
+  "author": "",
+  "license": "MIT",
+  "type": "module",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json && tsc-alias -p tsconfig.build.json",
+    "start": "node dist/index.js",
+    "dev": "tsx src/index.ts",
+    "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
+    "lint": "eslint \"{src,test}/**/*.ts\" --fix",
+    "test": "NODE_OPTIONS=--experimental-vm-modules jest",
+    "test:watch": "NODE_OPTIONS=--experimental-vm-modules jest --watch",
+    "test:cov": "NODE_OPTIONS=--experimental-vm-modules jest --coverage",
+    "prepare": "husky"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^21.0.2",
+    "@commitlint/config-conventional": "^21.0.2",
+    "@eslint/js": "^9.18.0",
+    "@types/jest": "^30.0.0",
+    "@types/node": "^22.10.7",
+    "eslint": "^9.18.0",
+    "eslint-config-prettier": "^10.0.1",
+    "eslint-plugin-prettier": "^5.2.2",
+    "globals": "^16.0.0",
+    "husky": "^9.1.7",
+    "jest": "^30.0.0",
+    "lint-staged": "^17.0.8",
+    "prettier": "^3.4.2",
+    "ts-jest": "^29.4.11",
+    "tsc-alias": "^1.8.10",
+    "tsx": "^4.19.2",
+    "typescript": "6.0.3",
+    "typescript-eslint": "^8.20.0"
+  },
+  "lint-staged": {
+    "{src,test}/**/*.ts": [
+      "prettier --write",
+      "eslint --fix"
+    ]
+  },
+  "jest": {
+    "extensionsToTreatAsEsm": [
+      ".ts"
+    ],
+    "moduleFileExtensions": [
+      "js",
+      "json",
+      "ts"
+    ],
+    "rootDir": ".",
+    "roots": [
+      "<rootDir>/src",
+      "<rootDir>/test"
+    ],
+    "testRegex": ".*\\.test\\.ts$",
+    "moduleNameMapper": {
+      "^(\\.{1,2}/.*)\\.js$": "$1",
+      "^@/(.*)\\.js$": "<rootDir>/src/$1",
+      "^@/(.*)$": "<rootDir>/src/$1"
+    },
+    "transform": {
+      "^.+\\.(t|j)s$": [
+        "ts-jest",
+        {
+          "useESM": true
+        }
+      ]
+    },
+    "collectCoverageFrom": [
+      "src/**/*.(t|j)s"
+    ],
+    "coverageDirectory": "coverage",
+    "testEnvironment": "node"
+  },
+  "allowScripts": {
+    "esbuild@0.28.2": true,
+    "unrs-resolver@1.12.2": true
+  }
+}
