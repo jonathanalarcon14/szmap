@@ -1,0 +1,1 @@
+export { registerScanCommand } from './scan';

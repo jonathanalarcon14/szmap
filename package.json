@@ -1,6 +1,6 @@
 {
   "name": "szmap",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "",
   "author": "",
   "license": "MIT",
@@ -82,5 +82,9 @@
   "allowScripts": {
     "esbuild@0.28.2": true,
     "unrs-resolver@1.12.2": true
+  },
+  "dependencies": {
+    "commander": "^15.0.0",
+    "globby": "^16.2.4"
   }
 }
