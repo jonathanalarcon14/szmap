@@ -8,13 +8,17 @@ const DEFAULT_INCLUDE = ['**/*.ts', '**/*.tsx', '**/*.js', '**/*.jsx'];
 const DEFAULT_IGNORE = ['**/node_modules/**'];
 
 export function registerScanCommand(program: Command) {
-  program.argument('[path]', '', '.').action(async (path: string) => {
+  program.argument('[paths...]', '', ['.']).action(async (paths: string[]) => {
     const options: ScanOptions = {
       include: DEFAULT_INCLUDE,
       ignore: DEFAULT_IGNORE,
     };
-    const absolutePath: string = resolve(path);
-    const result = await scanPath(absolutePath, options);
-    printDataFiles(result, absolutePath);
+    console.log();
+    for (const path of paths) {
+      const absolutePath: string = resolve(path);
+      const result = await scanPath(absolutePath, options);
+      printDataFiles(result, absolutePath, path);
+    }
+    console.log();
   });
 }
