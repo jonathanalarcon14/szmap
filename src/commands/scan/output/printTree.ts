@@ -51,7 +51,11 @@ function printNode(
   });
 }
 
-function buildTree(results: FileScanResult[], absolutePath: string): TreeNode {
+// Exported for testing only — not part of this module's public API (see index.ts)
+export function buildTree(
+  results: FileScanResult[],
+  absolutePath: string,
+): TreeNode {
   const root: TreeNode = { name: basename(absolutePath), children: new Map() };
 
   for (const result of results) {
