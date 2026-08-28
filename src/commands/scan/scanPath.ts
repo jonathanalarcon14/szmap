@@ -3,12 +3,18 @@ import {
   parseFile,
   analyzeSourceFile,
   type ScanOptions,
+  type FileMetrics,
 } from './core';
+
+export interface FileScanResult extends FileMetrics {
+  file: string;
+  lines: number;
+}
 
 export async function scanPath(
   path: string,
   options: ScanOptions,
-): Promise<void> {
+): Promise<FileScanResult[]> {
   const files = await findFiles(path, options);
   const results = await Promise.all(
     files.map(async (file) => {
@@ -17,5 +23,5 @@ export async function scanPath(
       return { file, lines, ...metrics };
     }),
   );
-  console.log(results);
+  return results;
 }
