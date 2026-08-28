@@ -1,9 +1,6 @@
 import type { FileScanResult } from '../scanPath';
 import { relative, basename } from 'path';
-
-const FOLDER_COLOR = '\x1b[34m';
-const METRIC_COLOR = '\x1b[90m';
-const RESET = '\x1b[0m';
+import { loadConfig, type ResolvedConfig } from '@config';
 
 interface TreeNode {
   name: string;
@@ -15,23 +12,25 @@ export function printTree(
   results: FileScanResult[],
   absolutePath: string,
 ): void {
+  const config = loadConfig();
   const tree = buildTree(results, absolutePath);
-  printNode(tree);
+  printNode(tree, config);
 }
 
 function printNode(
   node: TreeNode,
+  config: ResolvedConfig,
   prefix: string = '',
   isLast: boolean = true,
   isRoot: boolean = true,
 ): void {
   if (isRoot) {
-    console.log(`${FOLDER_COLOR}${node.name}${RESET}`);
+    console.log(`${config.colors.folder}${node.name}${config.colors.reset}`);
   } else {
     const connector = isLast ? '└── ' : '├── ';
     const label = node.data
-      ? `${node.name} — ${METRIC_COLOR}${node.data.lines} lines, ${node.data.functions} functions, ${node.data.classes} classes, ${node.data.interfaces} interfaces${RESET}`
-      : `${FOLDER_COLOR}${node.name}${RESET}`;
+      ? `${node.name} — ${config.colors.metrics}${node.data.lines} lines, ${node.data.functions} functions, ${node.data.classes} classes, ${node.data.interfaces} interfaces${config.colors.reset}`
+      : `${config.colors.folder}${node.name}${config.colors.reset}`;
     console.log(prefix + connector + label);
   }
 
@@ -47,7 +46,7 @@ function printNode(
 
   children.forEach((child, index) => {
     const childIsLast = index === children.length - 1;
-    printNode(child, childPrefix, childIsLast, false);
+    printNode(child, config, childPrefix, childIsLast, false);
   });
 }
 

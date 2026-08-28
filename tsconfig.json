@@ -12,7 +12,8 @@
     "outDir": "./dist",
     "rootDir": "./",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@config": ["./src/commands/config"]
     },
     "incremental": true,
     "skipLibCheck": true,

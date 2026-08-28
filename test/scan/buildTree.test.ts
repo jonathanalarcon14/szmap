@@ -1,4 +1,5 @@
 import { buildTree } from '../../src/commands/scan/output/printTree';
+import { type FileScanResult } from '../../src/commands/scan/scanPath';
 
 describe('buildTree', () => {
   it('builds a tree with a single file at the root', () => {
@@ -129,7 +130,7 @@ describe('buildTree', () => {
   });
 
   it('returns an empty tree when there are no results', () => {
-    const results = [];
+    const results: FileScanResult[] = [];
 
     const tree = buildTree(results, '/aaa');
 

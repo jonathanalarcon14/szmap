@@ -1,17 +1,16 @@
 import { Command } from 'commander';
+import { loadConfig } from '@config';
 import { scanPath } from './scanPath';
 import type { ScanOptions } from './core';
 import { printDataFiles } from './printDataFiles';
 import { resolve } from 'path';
 
-const DEFAULT_INCLUDE = ['**/*.ts', '**/*.tsx', '**/*.js', '**/*.jsx'];
-const DEFAULT_IGNORE = ['**/node_modules/**'];
-
 export function registerScanCommand(program: Command) {
   program.argument('[paths...]', '', ['.']).action(async (paths: string[]) => {
+    const config = loadConfig();
     const options: ScanOptions = {
-      include: DEFAULT_INCLUDE,
-      ignore: DEFAULT_IGNORE,
+      include: config.scan.include,
+      ignore: config.scan.ignore,
     };
     console.log();
     for (const path of paths) {
