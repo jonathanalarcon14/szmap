@@ -1,12 +1,7 @@
 import { writeFileSync } from 'fs';
-import {
-  getConfigPath,
-  defaultConfigTemplate,
-  ensureConfigFileExists,
-} from './core';
+import { getOrCreateConfigPath, defaultConfigTemplate } from './core';
 
 export function resetConfig(): void {
-  ensureConfigFileExists();
-  const configPath = getConfigPath();
+  const configPath = getOrCreateConfigPath();
   writeFileSync(configPath, defaultConfigTemplate);
 }

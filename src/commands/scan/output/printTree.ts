@@ -1,6 +1,6 @@
 import type { FileScanResult } from '../scanPath';
 import { relative, basename } from 'path';
-import { loadConfig, type ResolvedConfig } from '@config';
+import type { ResolvedConfig } from '@config';
 
 interface TreeNode {
   name: string;
@@ -11,27 +11,40 @@ interface TreeNode {
 export function printTree(
   results: FileScanResult[],
   absolutePath: string,
+  config: ResolvedConfig,
 ): void {
-  const config = loadConfig();
-  const tree = buildTree(results, absolutePath);
-  printNode(tree, config);
+  for (const line of formatTree(results, absolutePath, config)) {
+    console.log(line);
+  }
 }
 
-function printNode(
+export function formatTree(
+  results: FileScanResult[],
+  absolutePath: string,
+  config: ResolvedConfig,
+): string[] {
+  const tree = buildTree(results, absolutePath);
+  const lines: string[] = [];
+  formatNode(tree, config, lines);
+  return lines;
+}
+
+function formatNode(
   node: TreeNode,
   config: ResolvedConfig,
+  lines: string[],
   prefix: string = '',
   isLast: boolean = true,
   isRoot: boolean = true,
 ): void {
   if (isRoot) {
-    console.log(`${config.colors.folder}${node.name}${config.colors.reset}`);
+    lines.push(`${config.colors.folder}${node.name}${config.colors.reset}`);
   } else {
     const connector = isLast ? '└── ' : '├── ';
     const label = node.data
       ? `${node.name} — ${config.colors.metrics}${node.data.lines} lines, ${node.data.functions} functions, ${node.data.classes} classes, ${node.data.interfaces} interfaces${config.colors.reset}`
       : `${config.colors.folder}${node.name}${config.colors.reset}`;
-    console.log(prefix + connector + label);
+    lines.push(prefix + connector + label);
   }
 
   const children = Array.from(node.children.values()).sort((a, b) => {
@@ -46,7 +59,7 @@ function printNode(
 
   children.forEach((child, index) => {
     const childIsLast = index === children.length - 1;
-    printNode(child, config, childPrefix, childIsLast, false);
+    formatNode(child, config, lines, childPrefix, childIsLast, false);
   });
 }
 

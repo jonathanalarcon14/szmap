@@ -1,5 +1,4 @@
-export { ensureConfigFileExists } from './ensureConfigFileExists';
-export { getConfigPath } from './envPath';
+export { getOrCreateConfigPath } from './getOrCreateConfigPath';
 export { defaultConfig, defaultConfigTemplate } from './defaultConfig';
 export {
   ConfigSchema,

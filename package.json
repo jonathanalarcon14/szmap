@@ -1,6 +1,6 @@
 {
   "name": "szmap",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "",
   "author": "",
   "license": "MIT",
@@ -9,7 +9,7 @@
     "dist"
   ],
   "scripts": {
-    "build": "tsc -p tsconfig.build.json && tsc-alias -p tsconfig.build.json",
+    "build": "tsc -p tsconfig.build.json && tsc-alias -p tsconfig.build.json --resolve-full-paths",
     "start": "node dist/index.js",
     "dev": "tsx src/index.ts",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",

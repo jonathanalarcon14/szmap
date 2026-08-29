@@ -6,8 +6,23 @@ export const defaultConfig: RawConfig = {
     metrics: 'gray',
   },
   scan: {
-    include: ['**/*.ts', '**/*.tsx', '**/*.js', '**/*.jsx'],
-    ignore: ['**/node_modules/**'],
+    include: [
+      '**/*.ts',
+      '**/*.tsx',
+      '**/*.js',
+      '**/*.jsx',
+      '**/*.mjs',
+      '**/*.cjs',
+      '**/*.mts',
+      '**/*.cts',
+    ],
+    ignore: [
+      '**/node_modules/**',
+      '**/dist/**',
+      '**/build/**',
+      '**/coverage/**',
+      '**/.git/**',
+    ],
   },
 };
 

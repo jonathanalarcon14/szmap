@@ -1,8 +1,7 @@
 import { readFileSync } from 'fs';
 import { parse } from 'jsonc-parser';
 import {
-  ensureConfigFileExists,
-  getConfigPath,
+  getOrCreateConfigPath,
   defaultConfig,
   ConfigSchema,
   type RawConfig,
@@ -11,9 +10,7 @@ import {
 } from './core';
 
 export function loadConfig(): ResolvedConfig {
-  ensureConfigFileExists();
-
-  const configPath = getConfigPath();
+  const configPath = getOrCreateConfigPath();
   const raw = readFileSync(configPath, 'utf-8');
   const parsed: unknown = parse(raw);
 
@@ -25,7 +22,7 @@ export function loadConfig(): ResolvedConfig {
     rawConfig = result.data;
   } else {
     console.warn(
-      `${ANSI_COLORS.brightYellow}szmap config is invalid, using defaults for this run.${ANSI_COLORS.reset}`,
+      `${ANSI_COLORS.brightYellow}szmap config is invalid, using defaults for this run.\nRun 'szmap config --reset' to restore defaults.${ANSI_COLORS.reset}`,
     );
     rawConfig = defaultConfig;
   }
