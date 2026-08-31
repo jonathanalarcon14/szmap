@@ -34,7 +34,7 @@ describe('formatTree', () => {
 
     expect(lines).toEqual([
       'aaa',
-      '└── index.ts — 10 lines, 1 functions, 0 classes, 0 interfaces',
+      '└── index.ts — 10 lines, 1 functions, 0 classes, 0 methods, 0 interfaces',
     ]);
   });
 
@@ -47,9 +47,9 @@ describe('formatTree', () => {
 
     expect(lines).toEqual([
       'aaa',
-      '├── a.ts — 10 lines, 1 functions, 0 classes, 0 interfaces',
-      '├── b.ts — 10 lines, 1 functions, 0 classes, 0 interfaces',
-      '└── c.ts — 10 lines, 1 functions, 0 classes, 0 interfaces',
+      '├── a.ts — 10 lines, 1 functions, 0 classes, 0 methods, 0 interfaces',
+      '├── b.ts — 10 lines, 1 functions, 0 classes, 0 methods, 0 interfaces',
+      '└── c.ts — 10 lines, 1 functions, 0 classes, 0 methods, 0 interfaces',
     ]);
   });
 
@@ -63,8 +63,8 @@ describe('formatTree', () => {
     expect(lines).toEqual([
       'aaa',
       '├── bbb',
-      '│   └── index.ts — 10 lines, 1 functions, 0 classes, 0 interfaces',
-      '└── z.ts — 10 lines, 1 functions, 0 classes, 0 interfaces',
+      '│   └── index.ts — 10 lines, 1 functions, 0 classes, 0 methods, 0 interfaces',
+      '└── z.ts — 10 lines, 1 functions, 0 classes, 0 methods, 0 interfaces',
     ]);
   });
 
@@ -79,8 +79,8 @@ describe('formatTree', () => {
       'aaa',
       '├── bbb',
       '│   └── ccc',
-      '│       └── deep.ts — 10 lines, 1 functions, 0 classes, 0 interfaces',
-      '└── other.ts — 10 lines, 1 functions, 0 classes, 0 interfaces',
+      '│       └── deep.ts — 10 lines, 1 functions, 0 classes, 0 methods, 0 interfaces',
+      '└── other.ts — 10 lines, 1 functions, 0 classes, 0 methods, 0 interfaces',
     ]);
   });
 
@@ -94,7 +94,7 @@ describe('formatTree', () => {
 
     expect(lines).toEqual([
       '<F>aaa<R>',
-      '└── index.ts — <M>10 lines, 1 functions, 0 classes, 0 interfaces<R>',
+      '└── index.ts — <M>10 lines, 1 functions, 0 classes, 0 methods, 0 interfaces<R>',
     ]);
   });
 });

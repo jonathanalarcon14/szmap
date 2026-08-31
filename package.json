@@ -1,6 +1,6 @@
 {
   "name": "szmap",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "description": "",
   "author": "",
   "license": "MIT",
@@ -17,6 +17,7 @@
     "test": "NODE_OPTIONS=--experimental-vm-modules jest",
     "test:watch": "NODE_OPTIONS=--experimental-vm-modules jest --watch",
     "test:cov": "NODE_OPTIONS=--experimental-vm-modules jest --coverage",
+    "test:e2e": "npm run build && NODE_OPTIONS=--experimental-vm-modules jest --testRegex='.*\\.e2e\\.test\\.ts$'",
     "prepare": "husky"
   },
   "devDependencies": {
@@ -59,7 +60,7 @@
       "<rootDir>/src",
       "<rootDir>/test"
     ],
-    "testRegex": ".*\\.test\\.ts$",
+    "testRegex": ".*(?<!\\.e2e)\\.test\\.ts$",
     "moduleNameMapper": {
       "^(\\.{1,2}/.*)\\.js$": "$1",
       "^@config$": "<rootDir>/src/commands/config/index.ts",

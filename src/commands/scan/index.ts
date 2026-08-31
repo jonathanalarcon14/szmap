@@ -7,20 +7,35 @@ export function registerScanCommand(program: Command) {
   program
     .argument(
       '[paths...]',
-      'files or directories to scan (defaults to current directory)',
+      'files or directories to scan (prefix with ! to exclude, defaults to current directory)',
       ['.'],
     )
-    .action(async (paths: string[]) => {
-      const [{ scanPath }, { printDataFiles }, { loadConfig, ANSI_COLORS }] =
-        await Promise.all([
-          import('./scanPath.js'),
-          import('./printDataFiles.js'),
-          import('@config'),
-        ]);
+    .option(
+      '-i, --ignore <patterns...>',
+      'glob patterns to exclude (relative to each scan root)',
+    )
+    .action(async (args: string[], flags: { ignore?: string[] }) => {
+      const [
+        { scanPath },
+        { printDataFiles },
+        { parsePathArgs },
+        { loadConfig, ANSI_COLORS },
+      ] = await Promise.all([
+        import('./scanPath.js'),
+        import('./printDataFiles.js'),
+        import('./core/index.js'),
+        import('@config'),
+      ]);
       const config = loadConfig();
+      const { paths: rawPaths, ignores: inlineIgnores } = parsePathArgs(args);
+      const paths = rawPaths.length > 0 ? rawPaths : ['.'];
       const options: ScanOptions = {
         include: config.scan.include,
-        ignore: config.scan.ignore,
+        ignore: [
+          ...config.scan.ignore,
+          ...inlineIgnores,
+          ...(flags.ignore ?? []),
+        ],
       };
       console.log(
         `${ANSI_COLORS.green}Scanning ${paths.length} ${paths.length === 1 ? 'path' : 'paths'}...${ANSI_COLORS.reset}`,

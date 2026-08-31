@@ -8,7 +8,8 @@ const program = new Command();
 program
   .name('szmap')
   .description('Analyze codebases and visualize file metrics')
-  .version(pkg.version);
+  .version(pkg.version, '-v, --version', 'output the current version')
+  .helpOption('-h, --help', 'display help for command');
 
 registerScanCommand(program);
 registerConfigCommand(program);

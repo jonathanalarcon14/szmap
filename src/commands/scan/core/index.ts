@@ -6,3 +6,4 @@ export { parseFile, type ParsedFile } from './parseFile';
 export { analyzeSourceFile } from './analyzeSourceFile';
 export { scanInProcess } from './scanInProcess';
 export { scanWithPool } from './scanWithPool';
+export { parsePathArgs, type ParsedPathArgs } from './parsePathArgs';
