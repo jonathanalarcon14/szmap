@@ -1,13 +1,9 @@
 import { Command } from 'commander';
 import { existsSync } from 'fs';
-import type { ResolvedConfig } from '@config';
-import { scanPath } from './scanPath';
 import type { ScanOptions } from './core';
-import { printDataFiles } from './printDataFiles';
-import { ANSI_COLORS } from '@config';
 import { resolve } from 'path';
 
-export function registerScanCommand(program: Command, config: ResolvedConfig) {
+export function registerScanCommand(program: Command) {
   program
     .argument(
       '[paths...]',
@@ -15,6 +11,13 @@ export function registerScanCommand(program: Command, config: ResolvedConfig) {
       ['.'],
     )
     .action(async (paths: string[]) => {
+      const [{ scanPath }, { printDataFiles }, { loadConfig, ANSI_COLORS }] =
+        await Promise.all([
+          import('./scanPath.js'),
+          import('./printDataFiles.js'),
+          import('@config'),
+        ]);
+      const config = loadConfig();
       const options: ScanOptions = {
         include: config.scan.include,
         ignore: config.scan.ignore,
@@ -33,7 +36,12 @@ export function registerScanCommand(program: Command, config: ResolvedConfig) {
           process.exitCode = 1;
           continue;
         }
-        const result = await scanPath(absolutePath, options);
+        const result = await scanPath(
+          absolutePath,
+          options,
+          config.scan.poolThreshold,
+          config.scan.chunkSize,
+        );
         if (result.length === 0) {
           console.log(
             `${ANSI_COLORS.yellow}No files matched in ${path}. Check your patterns with 'szmap config'.${ANSI_COLORS.reset}`,

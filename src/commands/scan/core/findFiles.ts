@@ -1,4 +1,4 @@
-import { globby } from 'globby';
+import { glob } from 'tinyglobby';
 import { statSync } from 'fs';
 import type { ScanOptions } from './ScanOptions';
 
@@ -10,7 +10,7 @@ export async function findFiles(
   if (stats.isFile()) {
     return [path];
   }
-  return globby(options.include, {
+  return glob(options.include, {
     cwd: path,
     absolute: true,
     ignore: options.ignore,

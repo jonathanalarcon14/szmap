@@ -2,18 +2,15 @@
 import { Command } from 'commander';
 import pkg from '../package.json' with { type: 'json' };
 import { registerScanCommand, registerConfigCommand } from './commands';
-import { loadConfig } from '@config';
 
 const program = new Command();
 
 program
   .name('szmap')
-  .description('Analyze codebases and visualize file metrics as a tree')
+  .description('Analyze codebases and visualize file metrics')
   .version(pkg.version);
 
-const config = loadConfig();
-
-registerScanCommand(program, config);
+registerScanCommand(program);
 registerConfigCommand(program);
 
 program.parse();

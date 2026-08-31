@@ -1,3 +1,4 @@
+import * as v from 'valibot';
 import { ConfigSchema } from '../../src/commands/config/core/ConfigTypes';
 
 describe('ConfigSchema', () => {
@@ -10,10 +11,12 @@ describe('ConfigSchema', () => {
       scan: {
         include: ['**/*.ts', '**/*.tsx', '**/*.js', '**/*.jsx'],
         ignore: ['**/node_modules/**'],
+        poolThreshold: 300,
+        chunkSize: 100,
       },
     };
 
-    const result = ConfigSchema.safeParse(config);
+    const result = v.safeParse(ConfigSchema, config);
     expect(result.success).toBe(true);
   });
 
@@ -26,10 +29,12 @@ describe('ConfigSchema', () => {
       scan: {
         include: ['**/*.ts', '**/*.tsx', '**/*.js', '**/*.jsx'],
         ignore: ['**/node_modules/**'],
+        poolThreshold: 300,
+        chunkSize: 100,
       },
     };
 
-    const result = ConfigSchema.safeParse(config);
+    const result = v.safeParse(ConfigSchema, config);
     expect(result.success).toBe(false);
   });
 
@@ -41,7 +46,7 @@ describe('ConfigSchema', () => {
       },
     };
 
-    const result = ConfigSchema.safeParse(config);
+    const result = v.safeParse(ConfigSchema, config);
     expect(result.success).toBe(false);
   });
 
@@ -54,10 +59,12 @@ describe('ConfigSchema', () => {
       scan: {
         include: ['**/*.ts', '**/*.tsx', '**/*.js', '**/*.jsx', 234],
         ignore: ['**/node_modules/**'],
+        poolThreshold: 300,
+        chunkSize: 100,
       },
     };
 
-    const result = ConfigSchema.safeParse(config);
+    const result = v.safeParse(ConfigSchema, config);
     expect(result.success).toBe(false);
   });
 });

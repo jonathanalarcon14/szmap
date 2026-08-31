@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import * as v from 'valibot';
 
 const colorNames = [
   'black',
@@ -42,29 +42,27 @@ export const ANSI_COLORS: Record<
   reset: '\x1b[0m',
 };
 
-const ColorNameSchema = z.enum(colorNames);
+const ColorNameSchema = v.picklist(colorNames);
 
-export const ConfigSchema = z.object({
-  colors: z.object({
+export const ConfigSchema = v.object({
+  colors: v.object({
     folder: ColorNameSchema,
     metrics: ColorNameSchema,
   }),
-  scan: z.object({
-    include: z.array(z.string()),
-    ignore: z.array(z.string()),
+  scan: v.object({
+    include: v.array(v.string()),
+    ignore: v.array(v.string()),
+    poolThreshold: v.pipe(v.number(), v.integer(), v.minValue(1)),
+    chunkSize: v.pipe(v.number(), v.integer(), v.minValue(1)),
   }),
 });
 
-export type RawConfig = z.infer<typeof ConfigSchema>;
+export type RawConfig = v.InferOutput<typeof ConfigSchema>;
 
-export interface ResolvedConfig {
+export type ResolvedConfig = Omit<RawConfig, 'colors'> & {
   colors: {
     folder: string;
     metrics: string;
     reset: string;
   };
-  scan: {
-    include: string[];
-    ignore: string[];
-  };
-}
+};

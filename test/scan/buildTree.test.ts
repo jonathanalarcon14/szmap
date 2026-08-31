@@ -1,5 +1,5 @@
 import { buildTree } from '../../src/commands/scan/output/printTree';
-import { type FileScanResult } from '../../src/commands/scan/scanPath';
+import { type FileScanResult } from '../../src/commands/scan/core';
 
 describe('buildTree', () => {
   it('builds a tree with a single file at the root', () => {

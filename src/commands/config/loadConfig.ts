@@ -1,5 +1,6 @@
 import { readFileSync } from 'fs';
 import { parse } from 'jsonc-parser';
+import * as v from 'valibot';
 import {
   getOrCreateConfigPath,
   defaultConfig,
@@ -14,12 +15,12 @@ export function loadConfig(): ResolvedConfig {
   const raw = readFileSync(configPath, 'utf-8');
   const parsed: unknown = parse(raw);
 
-  const result = ConfigSchema.safeParse(parsed);
+  const result = v.safeParse(ConfigSchema, parsed);
 
   let rawConfig: RawConfig;
 
   if (result.success) {
-    rawConfig = result.data;
+    rawConfig = result.output;
   } else {
     console.warn(
       `${ANSI_COLORS.brightYellow}szmap config is invalid, using defaults for this run.\nRun 'szmap config --reset' to restore defaults.${ANSI_COLORS.reset}`,

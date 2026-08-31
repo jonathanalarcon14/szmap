@@ -1,8 +1,8 @@
-import * as ts from 'typescript';
+import { parseSync, type Program } from 'oxc-parser';
 import { analyzeSourceFile } from '../../src/commands/scan/core/analyzeSourceFile';
 
-function parse(code: string): ts.SourceFile {
-  return ts.createSourceFile('test.ts', code, ts.ScriptTarget.Latest, true);
+function parse(code: string): Program {
+  return parseSync('test.ts', code).program;
 }
 
 describe('analyzeSourceFile', () => {
@@ -66,11 +66,11 @@ describe('analyzeSourceFile', () => {
       parse(
         `
       class Cat {
-        
+
         foo() {};
         foo2() {};
         foo3() {};
-        
+
       };
       `,
       ),
@@ -88,11 +88,11 @@ describe('analyzeSourceFile', () => {
       parse(
         `
       interface Pet {
-        
+
         foo(): void;
         foo2(): void;
         foo3(): void;
-        
+
       };
       `,
       ),
@@ -113,27 +113,27 @@ describe('analyzeSourceFile', () => {
       function b() {};
       const c = (() => {});
       function d() {};
-      
-      
+
+
       class Pet {};
-      
-      
+
+
       class Cat {
-        
+
         foo() {};
         foo2() {};
         foo3() {};
-        
+
       };
-      
-      
-      
+
+
+
       interface Abcd {
-        
+
         foo(): void;
         foo2(): void;
         foo3(): void;
-        
+
       };
       `,
       ),

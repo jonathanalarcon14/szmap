@@ -1,5 +1,5 @@
 import { statSync } from 'fs';
-import type { FileScanResult } from './scanPath';
+import type { FileScanResult } from './core';
 import type { ResolvedConfig } from '@config';
 import { printTree, printFileLine } from './output';
 

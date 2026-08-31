@@ -1,4 +1,4 @@
-import type { FileScanResult } from '../scanPath';
+import type { FileScanResult } from '../core';
 import { relative, basename } from 'path';
 import type { ResolvedConfig } from '@config';
 

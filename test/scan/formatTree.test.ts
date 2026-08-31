@@ -1,10 +1,10 @@
 import { formatTree } from '../../src/commands/scan/output/printTree';
-import { type FileScanResult } from '../../src/commands/scan/scanPath';
+import { type FileScanResult } from '../../src/commands/scan/core';
 import { type ResolvedConfig } from '../../src/commands/config/core';
 
 const config: ResolvedConfig = {
   colors: { folder: '', metrics: '', reset: '' },
-  scan: { include: [], ignore: [] },
+  scan: { include: [], ignore: [], poolThreshold: 300, chunkSize: 100 },
 };
 
 function result(
@@ -87,7 +87,7 @@ describe('formatTree', () => {
   it('injects color codes from config around folder and metric segments', () => {
     const colored: ResolvedConfig = {
       colors: { folder: '<F>', metrics: '<M>', reset: '<R>' },
-      scan: { include: [], ignore: [] },
+      scan: { include: [], ignore: [], poolThreshold: 300, chunkSize: 100 },
     };
 
     const lines = formatTree([result('/aaa/index.ts')], '/aaa', colored);

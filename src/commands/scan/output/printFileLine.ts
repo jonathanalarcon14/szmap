@@ -1,4 +1,4 @@
-import type { FileScanResult } from '../scanPath';
+import type { FileScanResult } from '../core';
 import type { ResolvedConfig } from '@config';
 
 export function printFileLine(

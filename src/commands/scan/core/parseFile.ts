@@ -1,18 +1,15 @@
 import { readFile } from 'fs/promises';
-import * as ts from 'typescript';
+import { parseSync, type ParserOptions, type Program } from 'oxc-parser';
+
+const PARSE_OPTIONS = { experimentalRawTransfer: true } as ParserOptions;
 
 export interface ParsedFile {
-  sourceFile: ts.SourceFile;
+  program: Program;
   lines: number;
 }
 
 export async function parseFile(file: string): Promise<ParsedFile> {
   const content = await readFile(file, 'utf-8');
-  const sourceFile = ts.createSourceFile(
-    file,
-    content,
-    ts.ScriptTarget.Latest,
-    true,
-  );
-  return { sourceFile, lines: content.split('\n').length };
+  const { program } = parseSync(file, content, PARSE_OPTIONS);
+  return { program, lines: content.split('\n').length };
 }

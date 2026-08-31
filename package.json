@@ -1,6 +1,6 @@
 {
   "name": "szmap",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "description": "",
   "author": "",
   "license": "MIT",
@@ -87,8 +87,10 @@
   "dependencies": {
     "commander": "^15.0.0",
     "env-paths": "^4.0.0",
-    "globby": "^16.2.4",
     "jsonc-parser": "^3.3.1",
-    "zod": "^4.4.3"
+    "oxc-parser": "^0.147.0",
+    "tinyglobby": "^0.2.17",
+    "tinypool": "^2.1.2",
+    "valibot": "^1.4.2"
   }
 }
