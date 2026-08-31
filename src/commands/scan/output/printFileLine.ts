@@ -7,6 +7,6 @@ export function printFileLine(
   config: ResolvedConfig,
 ) {
   console.log(
-    `${path} — ${config.colors.metrics}${result.lines} lines, ${result.functions} functions, ${result.classes} classes, ${result.methods} methods, ${result.interfaces} interfaces${config.colors.reset}`,
+    `${path} — ${config.colors.metrics}${result.lines} ${result.lines === 1 ? 'line' : 'lines'}, ${result.functions} ${result.functions === 1 ? 'function' : 'functions'}, ${result.classes} ${result.classes === 1 ? 'class' : 'classes'}, ${result.methods} ${result.methods === 1 ? 'method' : 'methods'}, ${result.interfaces} ${result.interfaces === 1 ? 'interface' : 'interfaces'}${config.colors.reset}`,
   );
 }

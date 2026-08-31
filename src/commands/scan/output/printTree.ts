@@ -42,7 +42,7 @@ function formatNode(
   } else {
     const connector = isLast ? '└── ' : '├── ';
     const label = node.data
-      ? `${node.name} — ${config.colors.metrics}${node.data.lines} lines, ${node.data.functions} functions, ${node.data.classes} classes, ${node.data.methods} methods, ${node.data.interfaces} interfaces${config.colors.reset}`
+      ? `${node.name} — ${config.colors.metrics}${node.data.lines} ${node.data.lines === 1 ? 'line' : 'lines'}, ${node.data.functions} ${node.data.functions === 1 ? 'function' : 'functions'}, ${node.data.classes} ${node.data.classes === 1 ? 'class' : 'classes'}, ${node.data.methods} ${node.data.methods === 1 ? 'method' : 'methods'}, ${node.data.interfaces} ${node.data.interfaces === 1 ? 'interface' : 'interfaces'}${config.colors.reset}`
       : `${config.colors.folder}${node.name}${config.colors.reset}`;
     lines.push(prefix + connector + label);
   }

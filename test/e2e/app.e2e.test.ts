@@ -58,9 +58,9 @@ describe('szmap CLI (e2e)', () => {
     expect(code).toBe(0);
     expect(stdout).toContain('util.ts');
     expect(stdout).toMatch(/2 functions/);
-    expect(stdout).toMatch(/1 classes/);
+    expect(stdout).toMatch(/1 class(?!es)/);
     expect(stdout).toMatch(/2 methods/);
-    expect(stdout).toMatch(/1 interfaces/);
+    expect(stdout).toMatch(/1 interface(?!s)/);
     expect(stdout).toMatch(/1 file[s]? scanned/);
   });
 
