@@ -3,7 +3,7 @@ import {
   scanInProcess,
   scanWithPool,
   type ScanOptions,
-  type FileScanResult,
+  type ScanResult,
 } from './core';
 
 export async function scanPath(
@@ -11,7 +11,7 @@ export async function scanPath(
   options: ScanOptions,
   poolThreshold: number,
   chunkSize: number,
-): Promise<FileScanResult[]> {
+): Promise<ScanResult> {
   const files = await findFiles(path, options);
   return files.length > poolThreshold
     ? scanWithPool(files, chunkSize)

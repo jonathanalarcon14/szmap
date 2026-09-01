@@ -16,6 +16,7 @@
       "@config": ["./src/commands/config"]
     },
     "incremental": true,
+    "tsBuildInfoFile": "./.tsbuildinfo",
     "skipLibCheck": true,
     "strictNullChecks": true,
     "forceConsistentCasingInFileNames": true,

@@ -2,21 +2,32 @@ import { parseFile } from './parseFile';
 import { analyzeSourceFile } from './analyzeSourceFile';
 import type { FileScanResult } from './FileScanResult';
 
-export async function scanInProcess(
-  files: string[],
-): Promise<FileScanResult[]> {
-  const results = await Promise.all(
-    files.map(async (file): Promise<FileScanResult | null> => {
+export interface SkippedFile {
+  file: string;
+  message: string;
+}
+
+export interface ScanResult {
+  results: FileScanResult[];
+  skipped: SkippedFile[];
+}
+
+export async function scanInProcess(files: string[]): Promise<ScanResult> {
+  const results: FileScanResult[] = [];
+  const skipped: SkippedFile[] = [];
+  await Promise.all(
+    files.map(async (file) => {
       try {
         const { program, lines } = await parseFile(file);
         const metrics = analyzeSourceFile(program);
-        return { file, lines, ...metrics };
+        results.push({ file, lines, ...metrics });
       } catch (err) {
-        const message = err instanceof Error ? err.message : String(err);
-        console.warn(`Skipped ${file}: ${message}`);
-        return null;
+        skipped.push({
+          file,
+          message: err instanceof Error ? err.message : String(err),
+        });
       }
     }),
   );
-  return results.filter((r): r is FileScanResult => r !== null);
+  return { results, skipped };
 }

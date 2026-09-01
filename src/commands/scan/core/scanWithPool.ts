@@ -1,11 +1,11 @@
 import { availableParallelism } from 'os';
 import { fileURLToPath } from 'url';
-import type { FileScanResult } from './FileScanResult';
+import type { ScanResult } from './scanInProcess';
 
 export async function scanWithPool(
   files: string[],
   chunkSize: number,
-): Promise<FileScanResult[]> {
+): Promise<ScanResult> {
   const { default: Tinypool } = await import('tinypool');
   const isTs = import.meta.url.endsWith('.ts');
   const workerUrl = new URL(
@@ -22,10 +22,13 @@ export async function scanWithPool(
     chunks.push(files.slice(i, i + chunkSize));
   }
   try {
-    const results = (await Promise.all(
+    const chunkResults = (await Promise.all(
       chunks.map((chunk) => pool.run(chunk, { name: 'scanInProcess' })),
-    )) as FileScanResult[][];
-    return results.flat();
+    )) as ScanResult[];
+    return {
+      results: chunkResults.flatMap((c) => c.results),
+      skipped: chunkResults.flatMap((c) => c.skipped),
+    };
   } finally {
     await pool.destroy();
   }

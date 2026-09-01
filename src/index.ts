@@ -2,6 +2,7 @@
 import { Command } from 'commander';
 import pkg from '../package.json' with { type: 'json' };
 import { registerScanCommand, registerConfigCommand } from './commands';
+import { ANSI_COLORS } from '@config';
 
 const program = new Command();
 
@@ -14,4 +15,8 @@ program
 registerScanCommand(program);
 registerConfigCommand(program);
 
-program.parse();
+program.parseAsync().catch((err) => {
+  const message = err instanceof Error ? err.message : String(err);
+  console.error(`${ANSI_COLORS.red}Error: ${message}${ANSI_COLORS.reset}`);
+  process.exit(1);
+});
