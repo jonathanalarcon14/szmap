@@ -1,6 +1,6 @@
 {
   "name": "szmap",
-  "version": "0.8.0",
+  "version": "0.8.1",
   "description": "Analyze codebases and visualize file metrics from the terminal",
   "author": "Jonathan Alarcón <jonathanalarcon144@gmail.com>",
   "license": "MIT",
@@ -42,7 +42,9 @@
     "test:watch": "NODE_OPTIONS=--experimental-vm-modules jest --watch",
     "test:cov": "NODE_OPTIONS=--experimental-vm-modules jest --coverage",
     "test:e2e": "npm run build && NODE_OPTIONS=--experimental-vm-modules jest --testRegex='.*\\.e2e\\.test\\.ts$'",
-    "prepare": "husky || true"
+    "prepack": "node toggle-prepare.mjs disable",
+    "postpack": "node toggle-prepare.mjs enable",
+    "prepare": "husky"
   },
   "devDependencies": {
     "@commitlint/cli": "^21.0.2",
@@ -50,6 +52,7 @@
     "@eslint/js": "^9.18.0",
     "@types/jest": "^30.0.0",
     "@types/node": "^22.10.7",
+    "@types/picomatch": "^4.0.3",
     "eslint": "^9.18.0",
     "eslint-config-prettier": "^10.0.1",
     "eslint-plugin-prettier": "^5.2.2",
@@ -112,9 +115,10 @@
   "dependencies": {
     "commander": "^15.0.0",
     "env-paths": "^4.0.0",
+    "fdir": "^6.5.0",
     "jsonc-parser": "^3.3.1",
     "oxc-parser": "0.147.0",
-    "tinyglobby": "^0.2.17",
+    "picomatch": "^4.0.7",
     "tinypool": "^2.1.2",
     "valibot": "^1.4.2"
   }

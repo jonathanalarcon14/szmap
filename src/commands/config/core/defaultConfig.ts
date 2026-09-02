@@ -21,9 +21,8 @@ export const defaultConfig: RawConfig = {
       '**/dist/**',
       '**/build/**',
       '**/coverage/**',
-      '**/.git/**',
     ],
-    poolThreshold: 300,
+    poolThreshold: 1000,
     chunkSize: 100,
   },
 };

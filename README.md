@@ -18,7 +18,7 @@ npm install -g szmap
 szmap # defaults to '.' (current directory)
 ```
 
-Walks the directory recursively, picking up all JS/TS files and ignoring common paths by default (`node_modules`, `dist`, etc.). Shows code metrics per file (lines, functions, classes, methods, interfaces) rendered as a tree.
+Walks the directory recursively, picking up all JS/TS files and ignoring common paths by default (`node_modules`, `dist`, etc.) as well as any dot-prefixed directory (`.git`, `.next`, `.cache`, …). Shows code metrics per file (lines, functions, classes, methods, interfaces) rendered as a tree.
 
 Example output:
 
@@ -80,8 +80,8 @@ The config file lives at the OS-appropriate app-config path and lets you customi
 | `colors.folder` | `"blue"` | Folder color in the tree output. |
 | `colors.metrics` | `"gray"` | Metrics color. Both accept any supported named color. |
 | `scan.include` | `["**/*.ts", "**/*.tsx", "**/*.js", "**/*.jsx", "**/*.mjs", "**/*.cjs", "**/*.mts", "**/*.cts"]` | Which files to include (glob patterns). |
-| `scan.ignore` | `["**/node_modules/**", "**/dist/**", "**/build/**", "**/coverage/**", "**/.git/**"]` | Which files to ignore (glob patterns). |
-| `scan.poolThreshold` | `300` | Minimum number of files before spawning a worker pool. Lower on fast machines, higher on slow ones. |
+| `scan.ignore` | `["**/node_modules/**", "**/dist/**", "**/build/**", "**/coverage/**"]` | Which files to ignore (glob patterns). Dot-prefixed directories (`.git`, `.next`, `.cache`, …) are always pruned in addition to this list. |
+| `scan.poolThreshold` | `1000` | Minimum number of files before spawning a worker pool. Lower on fast machines, higher on slow ones. |
 | `scan.chunkSize` | `100` | How many files each worker processes per task. Larger = less overhead, smaller = better load balancing. |
 
 > [!NOTE]
@@ -160,7 +160,7 @@ flowchart TD
     Cfg --> Merge["merge ignores:<br/>config + inline ! + --ignore"]
     Parse --> Merge
     Merge --> Loop[for each path]
-    Loop --> Find["findFiles<br/>(tinyglobby)"]
+    Loop --> Find["findFiles<br/>(fdir + picomatch)"]
     Find --> Choose{files > poolThreshold?}
     Choose -- yes --> Pool["scanWithPool<br/>(chunk → tinypool workers)"]
     Choose -- no --> InProc[scanInProcess]
@@ -172,7 +172,7 @@ flowchart TD
 - **`parsePathArgs`** — splits positional args into scan paths and `!pattern` ignores.
 - **`loadConfig`** — loads the user config lazily inside the action (not at startup), so a broken file doesn't block `szmap config --reset`.
 - **merge ignores** — combines `scan.ignore` from config, inline `!` args, and `--ignore` flags into a single list applied per scan root.
-- **`findFiles`** — uses [`tinyglobby`](https://github.com/SuperchupuDev/tinyglobby) to walk each root with the merged include/ignore patterns.
+- **`findFiles`** — walks each root with [`fdir`](https://github.com/thecodrr/fdir), pruning dot-prefixed directories and any `**/NAME/**` ignore pattern at the directory boundary (so we never descend into `node_modules`, `dist`, etc.). Remaining include and complex ignore patterns are matched per-file with [`picomatch`](https://github.com/micromatch/picomatch).
 - **pool decision** — below `poolThreshold` files, work runs in-process; spawning workers for small scans costs more than it saves.
 - **`scanWithPool`** — chunks files (`chunkSize`) and dispatches to a [`tinypool`](https://github.com/tinylibs/tinypool) worker pool; many small chunks let the pool's queue self-balance.
 - **`parseFile` → `analyzeSourceFile`** — parses with [`oxc-parser`](https://oxc.rs) and walks the AST to count lines, functions, classes, methods, and interfaces.
