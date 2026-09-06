@@ -61,7 +61,7 @@ export function registerScanCommand(program: Command) {
         allSkipped.push(...skipped);
         if (results.length === 0) {
           console.log(
-            `${ANSI_COLORS.yellow}No files matched in ${path}. Check your patterns with 'szmap config'.${ANSI_COLORS.reset}`,
+            `${ANSI_COLORS.yellow}No files matched in '${path}'. Check your patterns with 'szmap config'.${ANSI_COLORS.reset}`,
           );
           continue;
         }
