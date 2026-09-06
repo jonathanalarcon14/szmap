@@ -9,7 +9,7 @@ A CLI tool for analyzing JavaScript and TypeScript codebases.
 ## 1. Installation
 
 ```bash
-npm install -g szmap
+npm install -g @jonathanalarcon14/szmap
 ```
 
 ## 2. Usage

@@ -1,5 +1,5 @@
 {
-  "name": "szmap",
+  "name": "@jonathanalarcon14/szmap",
   "version": "1.0.0",
   "description": "Analyze codebases and visualize file metrics from the terminal",
   "author": "Jonathan Alarcón <jonathanalarcon144@gmail.com>",
